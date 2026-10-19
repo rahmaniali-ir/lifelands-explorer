@@ -10,7 +10,7 @@ export default function HomePage() {
       </p>
 
       <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-        بازی بعدی خودتو را پیدا کن
+        بازی بعدی خودتو پیدا کن
       </h1>
 
       <p className="max-w-xl text-muted-foreground">
