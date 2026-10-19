@@ -1,5 +1,6 @@
 "use client"
 
+import { useFavorites } from "@/hooks/use-favorites"
 import type { Game } from "@/types/api"
 import { cn } from "cn"
 import {
@@ -12,20 +13,23 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "../ui/button"
-import { useFavorites } from "@/hooks/use-favorites"
 
 interface GameCardProps {
   game: Game
 }
 
 export function GameCard({ game }: GameCardProps) {
-  const { favorites, isReady, toggleFavorite } = useFavorites()
+  const { favorites, toggleFavorite } = useFavorites()
   const isFavorite = favorites.has(game._id)
 
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageError, setImageError] = useState(false)
+
   const [hovered, setHovered] = useState(false)
   const [flipped, setFlipped] = useState(false)
+
   const [videoError, setVideoError] = useState(false)
 
   const flip = () => setFlipped((f) => !f)
@@ -75,20 +79,33 @@ export function GameCard({ game }: GameCardProps) {
               game.video && !videoError && "cursor-zoom-in"
             )}
           >
-            {game.image ? (
+            {game.image && !imageLoaded && !imageError && (
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 animate-pulse bg-muted"
+              >
+                <div className="h-full w-full bg-gradient-to-r from-transparent via-background/60 to-transparent" />
+              </div>
+            )}
+
+            {game.image && !imageError ? (
               <Image
                 src={`https://dl.lifelands.ir/${game.image}`}
                 alt={game.title}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
                 className={cn(
-                  "pointer-events-none object-cover transition-transform duration-200 group-hover/gameCard:scale-115",
-                  game.video && "group-hover/gameCardImage:scale-120"
+                  "object-cover transition-all duration-200",
+                  "group-hover/gameCard:scale-115",
+                  game.video && "group-hover/gameCardImage:scale-120",
+                  imageLoaded ? "opacity-100" : "opacity-0"
                 )}
               />
             ) : (
               <div className="flex size-full items-center justify-center text-sm text-muted-foreground">
-                تصویری موجود نیست
+                {game.image ? "بارگذاری تصویر ناموفق بود" : "تصویری موجود نیست"}
               </div>
             )}
           </div>
