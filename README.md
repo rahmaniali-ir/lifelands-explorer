@@ -97,7 +97,7 @@ Game images use Next.js's `Image` component, with loading states and error fallb
 I used AI as a development assistant throughout this project, primarily for the following purposes:
 
 - **Layout and boilerplate generation:** Getting a starting point for parts of the UI, component structure, and repetitive setup code.
-- **React hooks and debouncing:** Getting guidance on implementing custom hooks, managing state, and using debouncing for the search experience.
+- **React hooks and debouncing:** Getting guidance on implementing custom hooks, managing state, and using debouncing/normalizing for the search experience.
 - **Learning Next.js:** Since this is my first Next.js application, I used AI to understand Next.js concepts and patterns, particularly the App Router, Server and Client Components, data fetching, and deployment.
 - **Debugging and implementation guidance:** Discussing errors, exploring possible solutions, and understanding how different implementation choices affect the application.
 

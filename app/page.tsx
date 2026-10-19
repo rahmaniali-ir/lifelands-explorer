@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Gamepad2Icon } from "lucide-react"
 
 export default function HomePage() {
   return (
@@ -9,18 +10,24 @@ export default function HomePage() {
       </p>
 
       <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-        بازی بعدی خودت را پیدا کن
+        بازی بعدی خودتو را پیدا کن
       </h1>
 
       <p className="max-w-xl text-muted-foreground">
-        بازی‌های جدید را کشف کن، دسته‌بندی‌ها را بگرد و بازی‌های موردعلاقه‌ات را
+        بازی‌های جدید کشف کن، دسته‌بندی‌ها رو بگرد و بازی‌های موردعلاقه‌ات رو
         پیدا کن.
       </p>
 
       <Button
         size="lg"
         nativeButton={false}
-        render={<Link href="/games">کاوش بازی‌ها</Link>}
+        className="group/explore"
+        render={
+          <Link href="/games">
+            <Gamepad2Icon className="size-5.5 overflow-visible text-sky-700 transition-all group-hover/explore:scale-120" />
+            <span>کاوش بازی‌ها</span>
+          </Link>
+        }
       />
     </main>
   )
