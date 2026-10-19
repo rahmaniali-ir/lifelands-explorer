@@ -25,6 +25,8 @@ import {
   SelectValue,
 } from "../ui/select"
 import { VendorMultiSelect } from "./vendor-multi-select"
+import { SearchIcon } from "lucide-react"
+import { cn } from "cn"
 
 interface GameExplorerProps {
   games: Game[]
@@ -148,15 +150,28 @@ export function GameExplorer({
           جست‌وجوی بازی‌ها
         </label>
 
-        <input
-          id="game-search"
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="نام بازی یا شرکت سازنده را جست‌وجو کنید..."
-          autoComplete="off"
-          className="h-10 w-full rounded-md border bg-background px-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring sm:max-w-md"
-        />
+        <div className="group/search relative">
+          <SearchIcon
+            className={cn(
+              "absolute inset-s-3 top-1/2 size-4 -translate-y-1/2",
+              "opacity-50 transition-all duration-300",
+              "group-hover/search:scale-115 group-hover/search:opacity-75",
+              "group-active/search:scale-100 group-active/search:opacity-100",
+              "group-focus-within/search:scale-110 group-focus-within/search:opacity-100",
+              "group-focus-within/search:rotate-360 group-focus-within/search:text-sky-500"
+            )}
+          />
+
+          <input
+            id="game-search"
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="نام بازی یا شرکت سازنده را جست‌وجو کنید..."
+            autoComplete="off"
+            className="h-10 w-full rounded-md border bg-background ps-10 pe-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring sm:max-w-md"
+          />
+        </div>
 
         <div className="flex flex-1 items-center gap-2">
           <p
