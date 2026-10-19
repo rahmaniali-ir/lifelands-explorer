@@ -24,19 +24,39 @@ export function GameCard({ game }: GameCardProps) {
 
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  const [hovered, setHovered] = useState(false)
   const [flipped, setFlipped] = useState(false)
+  const [videoError, setVideoError] = useState(false)
 
   const flip = () => setFlipped((f) => !f)
 
   useEffect(() => {
-    if (flipped) videoRef.current?.play()
-    else videoRef.current?.pause()
-  }, [flipped])
+    const handlePlayback = () => {
+      const video = videoRef.current
+
+      if (!video) return
+
+      if (!flipped) {
+        video.pause()
+        return
+      }
+
+      setVideoError(false)
+
+      video.play().catch(() => {
+        setVideoError(true)
+      })
+    }
+
+    handlePlayback()
+  }, [flipped, game.video])
 
   return (
     <article
       className="group/gameCard relative size-full animate-appear select-none perspective-midrange hover:z-10"
       onClick={flip}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* flipping card */}
       <div
@@ -44,7 +64,7 @@ export function GameCard({ game }: GameCardProps) {
           "relative size-full rounded-xl transform-3d",
           "transition-transform delay-25 duration-500",
           "group-focus-within/gameCard:outline-4",
-          game.video && flipped && "rotate-y-180 cursor-zoom-out"
+          game.video && flipped && !videoError && "rotate-y-180 cursor-zoom-out"
         )}
       >
         {/* card front */}
@@ -52,7 +72,7 @@ export function GameCard({ game }: GameCardProps) {
           <div
             className={cn(
               "group/gameCardImage relative aspect-video overflow-hidden rounded-lg bg-muted transition-transform duration-200",
-              game.video && "cursor-zoom-in"
+              game.video && !videoError && "cursor-zoom-in"
             )}
           >
             {game.image ? (
@@ -122,13 +142,18 @@ export function GameCard({ game }: GameCardProps) {
               "absolute inset-0 rotate-y-180 rounded-[inherit] bg-neutral-300 backface-hidden dark:bg-neutral-700"
             )}
           >
-            <video
-              ref={videoRef}
-              muted
-              loop
-              src={"https://dl.lifelands.ir/" + game.video}
-              className="size-full rounded-[inherit] object-cover"
-            />
+            {(hovered || flipped) && !videoError && (
+              <video
+                ref={videoRef}
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                src={`https://dl.lifelands.ir/${game.video}`}
+                onError={() => setVideoError(true)}
+                className="size-full rounded-[inherit] object-cover"
+              />
+            )}
           </div>
         )}
       </div>
